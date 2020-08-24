@@ -25,6 +25,7 @@ class CriarAvatar2Admin extends Migration
      */
     public function down()
     {
-         $table->dropColumn('avatar');
+        
+        $table->dropColumn('avatar');
     }
 }
