@@ -1,24 +1,24 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Entities\User;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Seed the application's database.
      *
      * @return void
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
-        DB::table('admins')->insert([
-        	'name'=>'Admin',
-        	'email'=>'thelesson.souza@gmail.com',
-        	'password'=>Hash::make('admin'),
-            'tipo'=>'Administrador',
-
-
-        	]);
+        User::create([
+            'isAdm'         => true,
+        	'name' 			=> 'athos',
+            'email' 		=> 'athos@sistemas.com',
+            'phone'         => '1971025399',
+        	'password' => Hash::make('password'),
+        ]);
     }
 }

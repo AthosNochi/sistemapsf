@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\User;
-use Validator;
 use App\Http\Controllers\Controller;
+use App\Providers\RouteServiceProvider;
+use App\Entities\User;
+use App\Entities\Patient;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
@@ -23,11 +26,11 @@ class RegisterController extends Controller
     use RegistersUsers;
 
     /**
-     * Where to redirect users after login / registration.
+     * Where to redirect users after registration.
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -48,10 +51,9 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-            
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
 
@@ -59,33 +61,22 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return User
+     * @return \App\Models\User
      */
     protected function create(array $data)
-
     {
-     for ($i = 0; $i < 2; $i++)
-        {
-            $uid = hexdec(uniqid());
-            $matriculaFull = $uid;
-    
-            $matricula=str_limit($matriculaFull,30);
-            $matricula=str_limit($matriculaFull,30);
-            $matriculaNova=substr_replace($matricula, '', 0,-10);
-            $matriculaFinal=substr_replace($matriculaNova,'',6);
+        if(isset($data->isAdm) && !strcmp($data->isAdm,'on')){
+            $isAdm=true;
+        }else{
+            $isAdm=false;
         }
- $tipo_perfil="Paciente";
+        $data->merge(["isAdm"=>$isAdm]);
 
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-            'matriculaPaciente' => $matriculaFinal,
-            'tipo' => $tipo_perfil,
-
+            'isAdm' => $data['isAdm'],
+            'password' => Hash::make($data['password']),
         ]);
-
     }
-
-   
 }

@@ -41,14 +41,35 @@ return [
             'provider' => 'users',
         ],
 
-        'admin' => [
-            'driver' => 'session',
-            'provider' => 'admin',
-        ],
-
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
+            'hash' => false,
+        ],
+
+        'user' => [
+            'driver' => 'session',
+            'provider' => 'users',
+        ],
+
+        'patient' => [
+            'driver' => 'session',
+            'provider' => 'patients',
+        ],
+
+        'secretaria' => [
+            'driver' => 'session',
+            'provider' => 'secretarias',
+        ],
+
+        'enfermeiro' => [
+            'driver' => 'session',
+            'provider' => 'enfermeiros',
+        ],
+
+        'doctor' => [
+            'driver' => 'session',
+            'provider' => 'doctors',
         ],
     ],
 
@@ -72,12 +93,28 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\User::class,
+            'model' => App\Entities\User::class,
         ],
-        'admin' => [
+
+        'patients' => [
             'driver' => 'eloquent',
-            'model' => App\Admin::class,
+            'model' => App\Entities\Patient::class,
         ],
+
+        'secretarias' => [
+            'driver' => 'eloquent',
+            'model' => App\Entities\Secretaria::class,
+        ],
+
+        'enfermeiros' => [
+            'driver' => 'eloquent',
+            'model' => App\Entities\Enfermeiro::class,
+        ],
+
+        'doctors' => [
+            'driver' => 'eloquent',
+            'model' => App\Entities\Doctor::class,
+        ]
 
         // 'users' => [
         //     'driver' => 'database',
@@ -105,7 +142,27 @@ return [
             'provider' => 'users',
             'table' => 'password_resets',
             'expire' => 60,
+            'throttle' => 60,
+        ],
+        'secretarias' => [
+            'provider' => 'secretarias',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Password Confirmation Timeout
+    |--------------------------------------------------------------------------
+    |
+    | Here you may define the amount of seconds before a password confirmation
+    | times out and the user is prompted to re-enter their password via the
+    | confirmation screen. By default, the timeout lasts for three hours.
+    |
+    */
+
+    'password_timeout' => 10800,
 
 ];
